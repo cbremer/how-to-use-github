@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Git & GitHub Basics for TPMs</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-icon">🐙</div>
+      <h1>Git &amp; GitHub Basics</h1>
+      <p class="hero-subtitle">A quick, interactive guide for TPMs — no engineering degree required!</p>
+      <div class="progress-bar-container" aria-label="Course progress">
+        <div
+          class="progress-bar"
+          id="progressBar"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-labelledby="progressLabel"></div>
+        <span class="progress-label" id="progressLabel"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nav tabs -->
+  <nav class="topic-nav" role="tablist" aria-label="Topics">
+    <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="what-is-git"    onclick="showTab('what-is-git')">🔧 What is Git?</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="repository"     onclick="showTab('repository')">📦 Repository</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="commit"         onclick="showTab('commit')">💾 Commits</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="branch-merge"   onclick="showTab('branch-merge')">🌿 Branches &amp; Merging</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="pull-request"   onclick="showTab('pull-request')">🔀 Pull Requests</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="workflow"       onclick="showTab('workflow')">🗺️ Full Workflow</button>
+  </nav>
+
+  <main class="content-area">
+
+    <!-- ── Tab 1: What is Git? ── -->
+    <section id="what-is-git" class="tab-panel active" role="tabpanel">
+      <div class="card">
+        <h2>🔧 What is Git?</h2>
+        <p>
+          <strong>Git</strong> is a <em>version control system</em>. Think of it like
+          <strong>"Track Changes" in Google Docs</strong> — but for code, and on steroids.
+        </p>
+        <div class="analogy-box">
+          <span class="analogy-icon">💡</span>
+          <div>
+            <strong>TPM analogy:</strong> Imagine every change your team makes to a project plan is
+            automatically saved with a timestamp, the author's name, and a note explaining what changed.
+            You can rewind to any earlier version at any time. That's Git.
+          </div>
+        </div>
+        <h3>Git vs GitHub — what's the difference?</h3>
+        <div class="comparison-grid">
+          <div class="compare-card git">
+            <div class="compare-icon">🛠️</div>
+            <h4>Git</h4>
+            <p>The <strong>tool</strong> that tracks changes on your computer. It's like the engine.</p>
+          </div>
+          <div class="compare-card github">
+            <div class="compare-icon">☁️</div>
+            <h4>GitHub</h4>
+            <p>A <strong>website</strong> that hosts Git repositories online so teams can collaborate. It's like Google Drive for code.</p>
+          </div>
+        </div>
+        <div class="key-points">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>✅ Git tracks the full history of every change</li>
+            <li>✅ Multiple people can work on the same project without overwriting each other</li>
+            <li>✅ You can always roll back a mistake</li>
+            <li>✅ GitHub is where teams share and review those changes</li>
+          </ul>
+        </div>
+        <button class="mark-done-btn" onclick="markDone('what-is-git', this)">Mark as Done ✓</button>
+      </div>
+    </section>
+
+    <!-- ── Tab 2: Repository ── -->
+    <section id="repository" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>📦 What is a Repository?</h2>
+        <p>
+          A <strong>repository</strong> (or "repo") is the <em>folder for your project</em> that Git
+          keeps track of. It contains all your files <em>plus</em> the entire history of every change
+          ever made to them.
+        </p>
+        <div class="analogy-box">
+          <span class="analogy-icon">💡</span>
+          <div>
+            <strong>TPM analogy:</strong> A repo is like a super-powered project folder in SharePoint —
+            it stores not just the current files, but every draft that was ever saved, who saved it,
+            and why.
+          </div>
+        </div>
+        <h3>Two types of repositories</h3>
+        <div class="comparison-grid">
+          <div class="compare-card git">
+            <div class="compare-icon">💻</div>
+            <h4>Local Repo</h4>
+            <p>Lives on <strong>your computer</strong>. You can work offline and experiment freely.</p>
+          </div>
+          <div class="compare-card github">
+            <div class="compare-icon">☁️</div>
+            <h4>Remote Repo (GitHub)</h4>
+            <p>Hosted on <strong>GitHub's servers</strong>. The shared "source of truth" your whole team syncs to.</p>
+          </div>
+        </div>
+
+        <!-- Interactive diagram -->
+        <h3>Interactive: Repo anatomy</h3>
+        <p>Click on each part of the repo to learn what it is:</p>
+        <div class="repo-diagram">
+          <div class="repo-folder" onclick="showRepoDetail('files')">
+            <span>📄</span> Files &amp; Folders
+          </div>
+          <div class="repo-folder" onclick="showRepoDetail('history')">
+            <span>🕐</span> Commit History
+          </div>
+          <div class="repo-folder" onclick="showRepoDetail('branches')">
+            <span>🌿</span> Branches
+          </div>
+          <div class="repo-folder" onclick="showRepoDetail('issues')">
+            <span>🐛</span> Issues &amp; PRs
+          </div>
+        </div>
+        <div class="repo-detail-box" id="repoDetailBox">
+          <em>👆 Click a part above to learn about it</em>
+        </div>
+
+        <div class="key-points">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>✅ A repo = your project folder + all its history</li>
+            <li>✅ Every project has one repo (sometimes more for microservices)</li>
+            <li>✅ You can see the full history on GitHub under the "Commits" tab</li>
+            <li>✅ The default main branch is usually called <code>main</code></li>
+          </ul>
+        </div>
+        <button class="mark-done-btn" onclick="markDone('repository', this)">Mark as Done ✓</button>
+      </div>
+    </section>
+
+    <!-- ── Tab 3: Commits ── -->
+    <section id="commit" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>💾 What is a Commit?</h2>
+        <p>
+          A <strong>commit</strong> is a <em>saved snapshot</em> of your changes. When a developer
+          commits, Git takes a picture of everything that changed and stores it permanently with:
+        </p>
+        <div class="commit-anatomy">
+          <div class="commit-part" onclick="highlightPart(this)">
+            <div class="commit-part-icon">🆔</div>
+            <strong>Hash</strong>
+            <p>A unique ID (e.g., <code>a3f9c2b</code>)</p>
+          </div>
+          <div class="commit-part" onclick="highlightPart(this)">
+            <div class="commit-part-icon">✍️</div>
+            <strong>Author</strong>
+            <p>Who made the change</p>
+          </div>
+          <div class="commit-part" onclick="highlightPart(this)">
+            <div class="commit-part-icon">🕐</div>
+            <strong>Timestamp</strong>
+            <p>Exactly when it was saved</p>
+          </div>
+          <div class="commit-part" onclick="highlightPart(this)">
+            <div class="commit-part-icon">💬</div>
+            <strong>Message</strong>
+            <p>A short note explaining what changed</p>
+          </div>
+          <div class="commit-part" onclick="highlightPart(this)">
+            <div class="commit-part-icon">📝</div>
+            <strong>Diff</strong>
+            <p>The exact lines that were added or removed</p>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <span class="analogy-icon">💡</span>
+          <div>
+            <strong>TPM analogy:</strong> A commit is like a version in Confluence — "v1.2 — added
+            acceptance criteria, @alice, March 6." Except Git captures <em>every single line</em>
+            that changed, automatically.
+          </div>
+        </div>
+
+        <!-- Mini timeline demo -->
+        <h3>A commit timeline</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">1</div>
+            <div class="timeline-content">
+              <strong>Initial setup</strong>
+              <span class="timeline-meta">Bob • 3 days ago</span>
+              <p>Created the project</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2</div>
+            <div class="timeline-content">
+              <strong>Added login page</strong>
+              <span class="timeline-meta">Alice • 2 days ago</span>
+              <p>Built the login UI</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">3</div>
+            <div class="timeline-content">
+              <strong>Fixed password bug</strong>
+              <span class="timeline-meta">Alice • 1 day ago</span>
+              <p>Fixed: passwords over 20 chars crashed</p>
+            </div>
+          </div>
+          <div class="timeline-item current">
+            <div class="timeline-dot">4</div>
+            <div class="timeline-content">
+              <strong>Add dark mode</strong>
+              <span class="timeline-meta">Carol • just now</span>
+              <p>Users can now toggle dark mode</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="key-points">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>✅ Commits are like save points — permanent and traceable</li>
+            <li>✅ Good commit messages help teammates (and future you!) understand what happened</li>
+            <li>✅ You can always go back to any commit</li>
+            <li>✅ Commits are <em>local</em> until you <strong>push</strong> them to GitHub</li>
+          </ul>
+        </div>
+        <button class="mark-done-btn" onclick="markDone('commit', this)">Mark as Done ✓</button>
+      </div>
+    </section>
+
+    <!-- ── Tab 4: Branches & Merging ── -->
+    <section id="branch-merge" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>🌿 Branches &amp; Merging</h2>
+
+        <h3>What is a Branch?</h3>
+        <p>
+          A <strong>branch</strong> is like a <em>parallel copy</em> of the project where you can
+          safely make changes without affecting the main codebase. The main branch (usually called
+          <code>main</code>) is the "official" version of the project.
+        </p>
+        <div class="analogy-box">
+          <span class="analogy-icon">💡</span>
+          <div>
+            <strong>TPM analogy:</strong> Think of branching like creating a copy of a PRD to draft
+            a new feature spec — you work on the copy freely, and only update the official doc after
+            your changes are reviewed and approved.
+          </div>
+        </div>
+
+        <!-- Visual branch diagram -->
+        <h3>Visual: how branches work</h3>
+        <div class="branch-viz">
+          <div class="branch-line main-line">
+            <span class="branch-label">main</span>
+            <div class="branch-dots">
+              <div class="bdot filled" title="commit 1"></div>
+              <div class="bdot filled" title="commit 2"></div>
+              <div class="bdot" title="after merge"></div>
+              <div class="bdot filled after-merge" title="merged"></div>
+            </div>
+          </div>
+          <div class="branch-line feature-line">
+            <span class="branch-label">feature/login</span>
+            <div class="branch-dots">
+              <div class="bdot empty"></div>
+              <div class="bdot filled" title="feature commit 1"></div>
+              <div class="bdot filled" title="feature commit 2"></div>
+              <div class="bdot merge-arrow" title="merged into main">↗</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>What is Merging?</h3>
+        <p>
+          <strong>Merging</strong> is the act of taking the changes from one branch and
+          combining them into another. This is how a feature goes from a developer's branch
+          into the <code>main</code> branch — and eventually to production.
+        </p>
+        <div class="analogy-box">
+          <span class="analogy-icon">💡</span>
+          <div>
+            <strong>TPM analogy:</strong> Merging is like folding the approved changes from your
+            draft PRD back into the official document — carefully, so nothing important is lost.
+          </div>
+        </div>
+
+        <h3>Commit vs Merge — key difference</h3>
+        <div class="comparison-grid">
+          <div class="compare-card git">
+            <div class="compare-icon">💾</div>
+            <h4>Commit</h4>
+            <p>Saves a <strong>snapshot of changes</strong> inside a branch. Like saving a draft.</p>
+          </div>
+          <div class="compare-card github">
+            <div class="compare-icon">🔗</div>
+            <h4>Merge</h4>
+            <p>Combines an <strong>entire branch</strong> into another. Like publishing the final doc.</p>
+          </div>
+        </div>
+
+        <div class="key-points">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>✅ <code>main</code> is the stable, production-ready branch</li>
+            <li>✅ Always work on a feature branch — never directly on <code>main</code></li>
+            <li>✅ Merging brings the feature branch changes into <code>main</code></li>
+            <li>✅ Merges usually happen via a <strong>Pull Request</strong> so changes are reviewed first</li>
+          </ul>
+        </div>
+        <button class="mark-done-btn" onclick="markDone('branch-merge', this)">Mark as Done ✓</button>
+      </div>
+    </section>
+
+    <!-- ── Tab 5: Pull Requests ── -->
+    <section id="pull-request" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>🔀 What is a Pull Request (PR)?</h2>
+        <p>
+          A <strong>Pull Request</strong> is a <em>formal proposal to merge your branch into
+          <code>main</code></em>. It gives your teammates a chance to review your changes,
+          leave comments, and approve (or request changes) before anything is merged.
+        </p>
+        <div class="analogy-box">
+          <span class="analogy-icon">💡</span>
+          <div>
+            <strong>TPM analogy:</strong> A PR is like a <em>change request review</em> in your
+            project. You submit your proposed changes, stakeholders review and comment, you address
+            feedback, and only after approval does it go live.
+          </div>
+        </div>
+
+        <!-- PR lifecycle -->
+        <h3>The PR lifecycle — step by step</h3>
+        <div class="pr-steps">
+          <div class="pr-step" onclick="toggleStep(this)">
+            <div class="pr-step-num">1</div>
+            <div class="pr-step-content">
+              <strong>Create a branch</strong>
+              <p>Developer creates a new branch for their feature or bug fix.</p>
+            </div>
+          </div>
+          <div class="pr-connector">↓</div>
+          <div class="pr-step" onclick="toggleStep(this)">
+            <div class="pr-step-num">2</div>
+            <div class="pr-step-content">
+              <strong>Make commits</strong>
+              <p>Developer writes code and commits changes to their branch.</p>
+            </div>
+          </div>
+          <div class="pr-connector">↓</div>
+          <div class="pr-step" onclick="toggleStep(this)">
+            <div class="pr-step-num">3</div>
+            <div class="pr-step-content">
+              <strong>Open a Pull Request</strong>
+              <p>On GitHub, open a PR: select your branch → base branch (<code>main</code>) → add a title &amp; description.</p>
+            </div>
+          </div>
+          <div class="pr-connector">↓</div>
+          <div class="pr-step" onclick="toggleStep(this)">
+            <div class="pr-step-num">4</div>
+            <div class="pr-step-content">
+              <strong>Code Review</strong>
+              <p>Reviewers read the diff, leave comments, suggest changes. The author responds and updates commits.</p>
+            </div>
+          </div>
+          <div class="pr-connector">↓</div>
+          <div class="pr-step" onclick="toggleStep(this)">
+            <div class="pr-step-num">5</div>
+            <div class="pr-step-content">
+              <strong>Approval &amp; Merge</strong>
+              <p>Once reviewers approve, the PR is merged into <code>main</code>. The branch is usually deleted.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>What a PR shows you (as a TPM)</h3>
+        <div class="pr-info-grid">
+          <div class="pr-info-card">
+            <span>📊</span>
+            <strong>Files changed</strong>
+            <p>Every file that was added, modified, or deleted</p>
+          </div>
+          <div class="pr-info-card">
+            <span>💬</span>
+            <strong>Discussions</strong>
+            <p>Inline comments on specific lines of code</p>
+          </div>
+          <div class="pr-info-card">
+            <span>✅</span>
+            <strong>Status checks</strong>
+            <p>Automated tests that must pass before merging</p>
+          </div>
+          <div class="pr-info-card">
+            <span>🔗</span>
+            <strong>Linked issues</strong>
+            <p>Which tickets or issues this PR resolves</p>
+          </div>
+        </div>
+
+        <div class="key-points">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>✅ PRs are the main collaboration mechanism on GitHub</li>
+            <li>✅ Every change to <code>main</code> should go through a PR (best practice)</li>
+            <li>✅ As a TPM, PRs are where you can track what's being built and why</li>
+            <li>✅ Link PRs to Jira/Linear tickets for full traceability</li>
+          </ul>
+        </div>
+        <button class="mark-done-btn" onclick="markDone('pull-request', this)">Mark as Done ✓</button>
+      </div>
+    </section>
+
+    <!-- ── Tab 6: Full Workflow ── -->
+    <section id="workflow" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>🗺️ The Full Git Workflow</h2>
+        <p>
+          Here's how all the pieces fit together. This is the typical flow a developer follows
+          from starting a new feature to shipping it to production.
+        </p>
+
+        <!-- Interactive workflow -->
+        <div class="workflow-container">
+          <div class="workflow-step" id="wf-1" onclick="explainWorkflow(1)">
+            <div class="wf-icon">☁️</div>
+            <div class="wf-label">1. Clone / Pull</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="workflow-step" id="wf-2" onclick="explainWorkflow(2)">
+            <div class="wf-icon">🌿</div>
+            <div class="wf-label">2. Branch</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="workflow-step" id="wf-3" onclick="explainWorkflow(3)">
+            <div class="wf-icon">✍️</div>
+            <div class="wf-label">3. Code</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="workflow-step" id="wf-4" onclick="explainWorkflow(4)">
+            <div class="wf-icon">💾</div>
+            <div class="wf-label">4. Commit</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="workflow-step" id="wf-5" onclick="explainWorkflow(5)">
+            <div class="wf-icon">⬆️</div>
+            <div class="wf-label">5. Push</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="workflow-step" id="wf-6" onclick="explainWorkflow(6)">
+            <div class="wf-icon">🔀</div>
+            <div class="wf-label">6. PR</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="workflow-step" id="wf-7" onclick="explainWorkflow(7)">
+            <div class="wf-icon">🚀</div>
+            <div class="wf-label">7. Merge</div>
+          </div>
+        </div>
+        <div class="workflow-detail" id="workflowDetail">
+          <em>👆 Click a step above to learn more about it</em>
+        </div>
+
+        <!-- Quick Reference Cheat Sheet -->
+        <h3>📋 Quick Reference: Common Git Commands</h3>
+        <p class="cheatsheet-note">As a TPM you usually won't run these yourself, but it's good to know what your engineers are doing!</p>
+        <div class="cheat-sheet">
+          <div class="cheat-row header">
+            <span>Command</span><span>What it does</span>
+          </div>
+          <div class="cheat-row">
+            <code>git clone &lt;url&gt;</code><span>Download a repo to your computer</span>
+          </div>
+          <div class="cheat-row">
+            <code>git pull</code><span>Get the latest changes from GitHub</span>
+          </div>
+          <div class="cheat-row">
+            <code>git checkout -b feature/name</code><span>Create and switch to a new branch</span>
+          </div>
+          <div class="cheat-row">
+            <code>git add .</code><span>Stage all changed files for commit</span>
+          </div>
+          <div class="cheat-row">
+            <code>git commit -m "message"</code><span>Save a snapshot with a description</span>
+          </div>
+          <div class="cheat-row">
+            <code>git push</code><span>Upload your commits to GitHub</span>
+          </div>
+          <div class="cheat-row">
+            <code>git status</code><span>See what files have changed</span>
+          </div>
+          <div class="cheat-row">
+            <code>git log</code><span>See the commit history</span>
+          </div>
+        </div>
+
+        <!-- Knowledge Check Quiz -->
+        <h3>🧠 Quick Knowledge Check</h3>
+        <div class="quiz-container" id="quizContainer"></div>
+
+        <div class="key-points">
+          <h3>🎉 You Did It!</h3>
+          <ul>
+            <li>✅ You know what Git and GitHub are</li>
+            <li>✅ You understand repositories, branches, and commits</li>
+            <li>✅ You know how PRs work and why they matter</li>
+            <li>✅ You can follow a conversation in any GitHub PR</li>
+          </ul>
+        </div>
+        <button class="mark-done-btn" onclick="markDone('workflow', this)">Mark as Done ✓</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Built for TPM onboarding • Questions? Open a GitHub issue 😄</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
