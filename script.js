@@ -7,12 +7,18 @@ const completedTopics = new Set();
 // ── Tab navigation ──
 function showTab(tabId) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
 
   const panel = document.getElementById(tabId);
   const btn   = document.querySelector(`[data-tab="${tabId}"]`);
   if (panel) panel.classList.add('active');
-  if (btn)   btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+  }
 }
 
 // ── Progress tracking ──
@@ -43,7 +49,10 @@ function updateProgress() {
   const bar     = document.getElementById('progressBar');
   const label   = document.getElementById('progressLabel');
 
-  if (bar)   bar.style.width = `${pct}%`;
+  if (bar) {
+    bar.style.width = `${pct}%`;
+    bar.setAttribute('aria-valuenow', String(Math.round(pct)));
+  }
   if (label) label.textContent = `${done} / ${total} topics completed`;
 }
 
@@ -249,8 +258,9 @@ function answerQuestion(selectedIndex) {
     feedEl.style.color = 'var(--secondary)';
     feedEl.textContent = q.explanation;
   } else {
+    const wrongExplanation = q.explanation.replace(/^✅ Correct!\s*/, '');
     feedEl.style.color = 'var(--danger)';
-    feedEl.textContent = `❌ Not quite. ${q.explanation}`;
+    feedEl.textContent = `❌ Not quite. ${wrongExplanation}`;
   }
 
   const isLast = currentQuestion === QUESTIONS.length - 1;
@@ -309,6 +319,6 @@ function restartQuiz() {
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
-  renderQuestion();
+  restartQuiz();
   updateProgress();
 });

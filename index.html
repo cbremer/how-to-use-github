@@ -15,7 +15,14 @@
       <h1>Git &amp; GitHub Basics</h1>
       <p class="hero-subtitle">A quick, interactive guide for TPMs — no engineering degree required!</p>
       <div class="progress-bar-container" aria-label="Course progress">
-        <div class="progress-bar" id="progressBar"></div>
+        <div
+          class="progress-bar"
+          id="progressBar"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-labelledby="progressLabel"></div>
         <span class="progress-label" id="progressLabel"></span>
       </div>
     </div>
@@ -503,13 +510,7 @@
 
         <!-- Knowledge Check Quiz -->
         <h3>🧠 Quick Knowledge Check</h3>
-        <div class="quiz-container" id="quizContainer">
-          <div class="quiz-question" id="quizQuestion"></div>
-          <div class="quiz-options" id="quizOptions"></div>
-          <div class="quiz-feedback" id="quizFeedback"></div>
-          <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
-          <div class="quiz-progress" id="quizProgress"></div>
-        </div>
+        <div class="quiz-container" id="quizContainer"></div>
 
         <div class="key-points">
           <h3>🎉 You Did It!</h3>
