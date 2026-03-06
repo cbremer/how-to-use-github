@@ -72,7 +72,7 @@ function showRepoDetail(key) {
   if (!box) return;
   const d = repoDetails[key];
   if (!d) return;
-  box.innerHTML = `<strong>${d.title}</strong><br/><span style="color:var(--muted)">${d.text}</span>`;
+  box.innerHTML = `<strong>${d.title}</strong><br/><span class="text-muted">${d.text}</span>`;
 }
 
 // ── Commit part highlight ──
@@ -135,7 +135,7 @@ function explainWorkflow(step) {
   const d   = workflowExplanations[step];
   const box = document.getElementById('workflowDetail');
   if (box && d) {
-    box.innerHTML = `<strong>${d.icon} Step ${step}: ${d.title}</strong><br/><span style="color:var(--muted)">${d.text}</span>`;
+    box.innerHTML = `<strong>${d.icon} Step ${step}: ${d.title}</strong><br/><span class="text-muted">${d.text}</span>`;
   }
 }
 
@@ -280,11 +280,11 @@ function showQuizResults() {
 
   container.innerHTML = `
     <div class="quiz-complete">
-      <div style="font-size:2.5rem">${emoji}</div>
+      <div class="quiz-result-emoji">${emoji}</div>
       <div class="score">${score} / ${QUESTIONS.length}</div>
-      <p style="font-size:1.05rem;margin:.5rem 0">${message}</p>
-      <p style="color:var(--muted);font-size:.9rem">Score: ${pct}%</p>
-      <button class="quiz-next-btn" onclick="restartQuiz()" style="margin-top:.75rem">Retry Quiz 🔄</button>
+      <p class="quiz-result-message">${message}</p>
+      <p class="quiz-result-pct">Score: ${pct}%</p>
+      <button class="quiz-next-btn quiz-retry-btn" onclick="restartQuiz()">Retry Quiz 🔄</button>
     </div>
   `;
 }

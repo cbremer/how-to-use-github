@@ -455,8 +455,11 @@ code {
 }
 .quiz-next-btn:hover { background: var(--primary-dark); }
 .quiz-progress { font-size: .82rem; color: var(--muted); margin-top: .5rem; }
-.quiz-complete { text-align: center; padding: 1rem 0; }
-.quiz-complete .score { font-size: 2rem; font-weight: 700; color: var(--primary); }
+.quiz-result-emoji   { font-size: 2.5rem; }
+.quiz-result-message { font-size: 1.05rem; margin: .5rem 0; }
+.quiz-result-pct     { color: var(--muted); font-size: .9rem; }
+.quiz-retry-btn      { margin-top: .75rem; }
+.text-muted          { color: var(--muted); }
 
 /* ── Footer ── */
 .site-footer {
