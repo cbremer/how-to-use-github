@@ -5,8 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Git & GitHub Basics for TPMs</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- Prevent flash of unstyled content when dark mode is preferred -->
+  <script>
+    (function () {
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      try {
+        var saved = localStorage.getItem('gh-basics-theme');
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {
+        /* localStorage unavailable (e.g. private mode) — apply system preference directly */
+        if (prefersDark) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      }
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- Dark / light mode toggle -->
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
 
   <!-- Hero -->
   <header class="hero">
@@ -78,7 +98,7 @@
             <li>✅ GitHub is where teams share and review those changes</li>
           </ul>
         </div>
-        <button class="mark-done-btn" onclick="markDone('what-is-git', this)">Mark as Done ✓</button>
+        <button class="mark-done-btn" data-topic="what-is-git" onclick="markDone('what-is-git', this)">Mark as Done ✓</button>
       </div>
     </section>
 
@@ -143,7 +163,7 @@
             <li>✅ The default main branch is usually called <code>main</code></li>
           </ul>
         </div>
-        <button class="mark-done-btn" onclick="markDone('repository', this)">Mark as Done ✓</button>
+        <button class="mark-done-btn" data-topic="repository" onclick="markDone('repository', this)">Mark as Done ✓</button>
       </div>
     </section>
 
@@ -238,7 +258,7 @@
             <li>✅ Commits are <em>local</em> until you <strong>push</strong> them to GitHub</li>
           </ul>
         </div>
-        <button class="mark-done-btn" onclick="markDone('commit', this)">Mark as Done ✓</button>
+        <button class="mark-done-btn" data-topic="commit" onclick="markDone('commit', this)">Mark as Done ✓</button>
       </div>
     </section>
 
@@ -322,7 +342,7 @@
             <li>✅ Merges usually happen via a <strong>Pull Request</strong> so changes are reviewed first</li>
           </ul>
         </div>
-        <button class="mark-done-btn" onclick="markDone('branch-merge', this)">Mark as Done ✓</button>
+        <button class="mark-done-btn" data-topic="branch-merge" onclick="markDone('branch-merge', this)">Mark as Done ✓</button>
       </div>
     </section>
 
@@ -421,7 +441,7 @@
             <li>✅ Link PRs to Jira/Linear tickets for full traceability</li>
           </ul>
         </div>
-        <button class="mark-done-btn" onclick="markDone('pull-request', this)">Mark as Done ✓</button>
+        <button class="mark-done-btn" data-topic="pull-request" onclick="markDone('pull-request', this)">Mark as Done ✓</button>
       </div>
     </section>
 
@@ -521,7 +541,7 @@
             <li>✅ You can follow a conversation in any GitHub PR</li>
           </ul>
         </div>
-        <button class="mark-done-btn" onclick="markDone('workflow', this)">Mark as Done ✓</button>
+        <button class="mark-done-btn" data-topic="workflow" onclick="markDone('workflow', this)">Mark as Done ✓</button>
       </div>
     </section>
 

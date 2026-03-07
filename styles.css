@@ -470,3 +470,93 @@ code {
   font-size: .9rem;
   background: var(--surface);
 }
+
+/* ── Theme Toggle Button ── */
+.theme-toggle {
+  position: fixed;
+  top: .75rem;
+  right: .75rem;
+  z-index: 200;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  line-height: 1;
+}
+.theme-toggle:hover { background: var(--bg); transform: rotate(20deg); }
+
+/* ── Copy Button (cheat sheet) ── */
+.cheat-cmd {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-wrap: nowrap;
+}
+.copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .1em .4em;
+  cursor: pointer;
+  font-size: .72rem;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.copy-btn:hover  { background: var(--bg); color: var(--primary); border-color: var(--primary); }
+.copy-btn.copied { color: var(--secondary); border-color: var(--secondary); }
+
+/* ── Dark Mode ── */
+[data-theme="dark"] {
+  --primary:      #58a6ff;
+  --primary-dark: #1f6feb;
+  --secondary:    #3fb950;
+  --accent:       #d29922;
+  --danger:       #f85149;
+  --bg:           #0d1117;
+  --surface:      #161b22;
+  --border:       #30363d;
+  --text:         #e6edf3;
+  --muted:        #8b949e;
+  --shadow:       0 2px 12px rgba(0,0,0,.4);
+}
+[data-theme="dark"] code {
+  background: #21262d;
+  color:       #ff7b72;
+}
+[data-theme="dark"] .analogy-box {
+  background:   #1c1a0e;
+  border-color: #4d3800;
+}
+[data-theme="dark"] .key-points {
+  background:   #0d1f10;
+  border-color: #1a4721;
+}
+[data-theme="dark"] .repo-detail-box,
+[data-theme="dark"] .workflow-detail {
+  background: #21262d;
+}
+[data-theme="dark"] .cheat-row:nth-child(even):not(.header) {
+  background: rgba(255,255,255,.04);
+}
+[data-theme="dark"] .quiz-option.correct {
+  background: #0d1f10;
+  color:       var(--secondary);
+}
+[data-theme="dark"] .quiz-option.wrong {
+  background: #220d0d;
+  color:       var(--danger);
+}
+[data-theme="dark"] .tab-btn:hover {
+  background:   rgba(88,166,255,.1);
+  border-color: var(--primary);
+  color:        var(--primary);
+}
