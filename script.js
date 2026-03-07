@@ -3,6 +3,48 @@
 // ── State ──
 const TOPICS = ['what-is-git', 'repository', 'commit', 'branch-merge', 'pull-request', 'workflow'];
 const completedTopics = new Set();
+const STORAGE_KEY = 'gh-basics-progress';
+const THEME_KEY   = 'gh-basics-theme';
+
+// ── Dark / Light Mode ──
+function toggleTheme() {
+  const isDark   = document.documentElement.getAttribute('data-theme') === 'dark';
+  const newTheme = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem(THEME_KEY, newTheme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+}
+
+function loadTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+
+// ── Progress persistence ──
+function saveProgress() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedTopics]));
+}
+
+function loadProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    saved.forEach(topicId => {
+      if (!TOPICS.includes(topicId)) return;
+      completedTopics.add(topicId);
+      const markBtn = document.querySelector(`.mark-done-btn[data-topic="${topicId}"]`);
+      if (markBtn) {
+        markBtn.textContent = 'Completed ✓';
+        markBtn.classList.add('done-btn');
+        markBtn.disabled = true;
+      }
+      const tabBtn = document.querySelector(`[data-tab="${topicId}"]`);
+      if (tabBtn) tabBtn.classList.add('done');
+    });
+    updateProgress();
+  } catch (e) { /* ignore corrupt data */ }
+}
 
 // ── Tab navigation ──
 function showTab(tabId) {
@@ -32,6 +74,7 @@ function markDone(topicId, btn) {
   if (tabBtn) tabBtn.classList.add('done');
 
   updateProgress();
+  saveProgress();
 
   // Auto-advance to next topic
   const idx  = TOPICS.indexOf(topicId);
@@ -54,6 +97,49 @@ function updateProgress() {
     bar.setAttribute('aria-valuenow', String(Math.round(pct)));
   }
   if (label) label.textContent = `${done} / ${total} topics completed`;
+}
+
+// ── Copy-to-clipboard buttons (cheat sheet) ──
+function initCopyButtons() {
+  document.querySelectorAll('.cheat-row:not(.header)').forEach(row => {
+    const codeEl = row.querySelector('code');
+    if (!codeEl) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.title = 'Copy to clipboard';
+    btn.setAttribute('aria-label', 'Copy command to clipboard');
+    btn.textContent = '📋';
+
+    btn.addEventListener('click', () => {
+      const text = codeEl.textContent;
+      const finish = () => {
+        btn.textContent = '✓';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '📋'; btn.classList.remove('copied'); }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(finish).catch(() => { /* silent fail */ });
+      } else {
+        // Fallback for older browsers
+        const range = document.createRange();
+        range.selectNode(codeEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        sel.removeAllRanges();
+        finish();
+      }
+    });
+
+    // Wrap the <code> and button together
+    const wrapper = document.createElement('span');
+    wrapper.className = 'cheat-cmd';
+    codeEl.parentNode.insertBefore(wrapper, codeEl);
+    wrapper.appendChild(codeEl);
+    wrapper.appendChild(btn);
+  });
 }
 
 // ── Repo diagram ──
@@ -319,6 +405,8 @@ function restartQuiz() {
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
+  loadTheme();
   restartQuiz();
-  updateProgress();
+  loadProgress();
+  initCopyButtons();
 });
