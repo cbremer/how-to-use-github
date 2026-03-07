@@ -8,10 +8,17 @@
   <!-- Prevent flash of unstyled content when dark mode is preferred -->
   <script>
     (function () {
-      var saved = localStorage.getItem('gh-basics-theme');
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
+      try {
+        var saved = localStorage.getItem('gh-basics-theme');
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {
+        /* localStorage unavailable (e.g. private mode) — apply system preference directly */
+        if (prefersDark) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
       }
     })();
   </script>

@@ -11,7 +11,9 @@ function toggleTheme() {
   const isDark   = document.documentElement.getAttribute('data-theme') === 'dark';
   const newTheme = isDark ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem(THEME_KEY, newTheme);
+  try {
+    localStorage.setItem(THEME_KEY, newTheme);
+  } catch (e) { /* ignore storage errors */ }
   const btn = document.getElementById('themeToggle');
   if (btn) btn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
 }
@@ -24,7 +26,13 @@ function loadTheme() {
 
 // ── Progress persistence ──
 function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedTopics]));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedTopics]));
+    return true;
+  } catch (e) {
+    // Ignore storage errors so UX (e.g., auto-advance) still works when storage is unavailable
+    return false;
+  }
 }
 
 function loadProgress() {
@@ -42,8 +50,9 @@ function loadProgress() {
       const tabBtn = document.querySelector(`[data-tab="${topicId}"]`);
       if (tabBtn) tabBtn.classList.add('done');
     });
+  } catch (e) { /* ignore corrupt data */ } finally {
     updateProgress();
-  } catch (e) { /* ignore corrupt data */ }
+  }
 }
 
 // ── Tab navigation ──
@@ -124,12 +133,30 @@ function initCopyButtons() {
         // Fallback for older browsers
         const range = document.createRange();
         range.selectNode(codeEl);
-        const sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
-        sel.removeAllRanges();
-        finish();
+        let sel = null;
+        try {
+          if (window.getSelection) {
+            sel = window.getSelection();
+          }
+        } catch (e) {
+          sel = null;
+        }
+        let successful = false;
+        if (sel && sel.removeAllRanges && sel.addRange) {
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try {
+            if (document.execCommand) {
+              successful = document.execCommand('copy');
+            }
+          } catch (e) {
+            successful = false;
+          }
+          sel.removeAllRanges();
+        }
+        if (successful) {
+          finish();
+        }
       }
     });
 
